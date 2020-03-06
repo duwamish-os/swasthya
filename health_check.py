@@ -1,16 +1,21 @@
 import concurrent.futures
 import urllib.request
+import ssl
+## context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
 
-URLS = ['http://www.foxnews.com/',
-        'http://www.cnn.com/',
-        'http://europe.wsj.com/',
-        'http://www.bbc.co.uk/',
-        'http://some-made-up-domain.com/']
+URLS = ['https://api.github.com',
+        'https://twitter.com',
+        'https://api.facebook.com',
+        'https://expedia.com',
+        'http://some-made-up-domain.com']
 
 # Retrieve a single page and report the URL and contents
 def check_health(url, timeout):
-    with urllib.request.urlopen(url, timeout=timeout) as conn:
-        return conn.read()
+    with urllib.request.urlopen(url, context=ctx, timeout=timeout) as conn:
+        return conn.getcode()
 
 # We can use a with statement to ensure threads are cleaned up promptly
 with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
@@ -21,6 +26,6 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         try:
             data = task.result()
         except Exception as exc:
-            print('%r generated an exception: %s' % (url, exc))
+            print('%r : %s' % (url, exc))
         else:
-            print('%r page is %d bytes' % (url, len(data)))
+            print('%r : %s' % (url, data))
