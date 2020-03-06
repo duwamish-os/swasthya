@@ -32,4 +32,6 @@ def check_healths():
             else:
                 print('%r : %s' % (url, data))
 
-check_healths()
+while True:
+    check_healths()
+    time.sleep(60)
