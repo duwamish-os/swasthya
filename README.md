@@ -1,4 +1,6 @@
 swasthya
 --------
 
-
+```
+brew install helm
+```
