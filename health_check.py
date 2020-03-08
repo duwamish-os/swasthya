@@ -8,12 +8,17 @@ ctx.verify_mode = ssl.CERT_NONE
 
 import time
 import sys
+import configparser
 
-URLS = ['https://api.github.com',
-        'https://twitter.com',
-        'https://api.facebook.com',
-        'https://expedia.com',
-        'http://some-made-up-domain.com']
+configParser = configparser.RawConfigParser()
+configParser.read('application.ini')
+server1 = configParser.get('dev', 'server1')
+server2 = configParser.get('dev', 'server2')
+server3 = configParser.get('dev', 'server3')
+server4 = configParser.get('dev', 'server4')
+server5 = configParser.get('dev', 'server5')
+
+URLS = [server1, server2, server3, server4, server5]
 
 def check_health(url, timeout):
     with urllib.request.urlopen(url, context=ctx, timeout=timeout) as conn:
