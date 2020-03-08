@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swasthya-server
+  labels:
+    app: swasthya-server
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: swasthya-server
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: swasthya-server
+    spec:
+      containers:
+        - image: swasthya-server:1.2 #REMOTE_CONTAINER_REGISTRY_TAG
+          imagePullPolicy: Never #Always for registry
+          name: swasthya-server
+          #          ports:
+          #            - containerPort: 9090
+          #              protocol: TCP
+          env:
+            - name: name
+              value: "swasthya-server"
+            - name: servers
+              value: "[s1, s2]"
