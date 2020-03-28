@@ -20,7 +20,7 @@ spec:
         app: swasthya-server
     spec:
       containers:
-        - image: swasthya-server:1.2 #REMOTE_CONTAINER_REGISTRY_TAG
+        - image: swasthya-server:1.0 #REMOTE_CONTAINER_REGISTRY_TAG
           imagePullPolicy: Never #Always for registry
           name: swasthya-server
           #          ports:
@@ -29,5 +29,5 @@ spec:
           env:
             - name: name
               value: "swasthya-server"
-            - name: servers
-              value: "[s1, s2]"
+            - name: SERVERS
+              value: "https://api.github.com, https://twitter.com, https://api.facebook.com"
